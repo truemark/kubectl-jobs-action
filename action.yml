@@ -1,0 +1,46 @@
+name: 'kubectl-jobs'
+description: 'Triggers a deployment of a kubernetes job and checks for completion of the job. Then removes the job resources.'
+inputs:
+  kubectl-version:
+    description: 'Version of the kubectl tool to use.'
+    required: true
+  helm-version:
+    description: 'Version of the helm tool to use.'
+    required: true
+  job-name:
+    description: 'Name of the job to deploy.'
+    required: true
+  namespace:
+    description: 'Namespace to deploy the job to.'
+    required: true
+  sleep-time:
+    description: 'Time to sleep between checking for job completion.'
+    required: true
+    default: '5s'
+  log-follow-duration:
+    description: 'Duration to follow the logs of the job.'
+    required: true
+    default: '60s'
+  KUBE_CONFIG_DATA:
+    description: 'Kubeconfig data to use for kubectl commands.'
+    required: true
+    default: ''
+  job-filepath:
+    description: 'Filepath to the job yaml file to deploy.'
+    required: true
+    default: ''
+outputs:
+  result:
+    description: "Output returned by your Helm or kubectl command"
+runs:
+  using: 'docker'
+  image: 'Dockerfile'
+  args:
+    - ${{ inputs.kubectl-version }}
+    - ${{ inputs.helm-version }}
+    - ${{ inputs.job-name }}
+    - ${{ inputs.namespace }}
+    - ${{ inputs.sleep-time }}
+    - ${{ inputs.log-follow-duration }}
+    - ${{ inputs.KUBE_CONFIG_DATA }}
+    - ${{ inputs.job-filepath }}
