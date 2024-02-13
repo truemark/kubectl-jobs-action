@@ -58,7 +58,7 @@ if [ ! -z "$INPUT_COMMAND" ]; then
   output=$(bash -c "${INPUT_COMMAND}")
 else
   # Check if JOB_NAME is set
-  if [ -z "$JOB_NAME" ]; then
+  if [ ! -z "$JOB_NAME" ]; then
     echo "JOB_NAME is not set. Exiting..."
     exit 1
   fi
