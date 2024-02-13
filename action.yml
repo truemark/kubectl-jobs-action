@@ -13,9 +13,11 @@ inputs:
     required: true
   sleep-time:
     description: 'Time to sleep between checking for job completion.'
+    required: true
     default: '5s'
   log-follow-duration:
     description: 'Duration to follow the logs of the job.'
+    required: true
     default: '60s'
   KUBE_CONFIG_DATA:
     description: 'Kubeconfig data to use for kubectl commands.'
