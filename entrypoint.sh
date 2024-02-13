@@ -60,7 +60,11 @@ else
     echo "JOB_NAME is not set. Exiting..."
     exit 1
   fi
-  set -xe
+#  Check if NAMESPACE is set
+  if [ ! -z "$NAMESPACE" ]; then
+    echo "NAMESPACE is not set. Exiting..."
+    exit 1
+  fi
   jobStatusOutput=$(job_status)
   jobLogsOutput=$(job_logs)
   output="${jobStatusOutput}\n${jobLogsOutput}"
