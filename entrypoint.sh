@@ -4,6 +4,7 @@ function job_status() {
   local response=""
 
   while true; do
+      POD_NAME=$(kubectl get pods -n "$NAMESPACE" | grep $JOB_NAME | awk '{print $1}');
       POD_STATUS=$(kubectl get pod "$POD_NAME" -n "$NAMESPACE" -o jsonpath='{.status.phase}')
 
       if [ "$POD_STATUS" == "Running" ]; then
@@ -43,12 +44,6 @@ function job_logs() {
   echo "$response"
 }
 
-#export NAMESPACE
-export POD_NAME=$(kubectl get pods -n "$NAMESPACE" | grep $JOB_NAME | awk '{print $1}');
-#export JOB_NAME=$(kubectl get job -n "$NAMESPACE" | grep $JOB_NAME | awk '{print $1}');
-#export SLEEP_TIME
-#export LOG_FOLLOW_DURATION
-#export JOB_FILEPATH
 
 echo "${KUBE_CONFIG_DATA}" | base64 -d > kubeconfig
 export KUBECONFIG="${PWD}/kubeconfig"
