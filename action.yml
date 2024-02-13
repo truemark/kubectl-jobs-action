@@ -27,6 +27,9 @@ inputs:
     description: 'Filepath to the job yaml file to deploy.'
     required: true
     default: ''
+  command:
+    description: 'Command to run with kubectl or helm.'
+    default: ''
 outputs:
   result:
     description: "Output returned by your Helm or kubectl command"
