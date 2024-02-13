@@ -47,7 +47,7 @@ function job_logs() {
 
 #export NAMESPACE
 export POD_NAME=$(kubectl get pods -n "$NAMESPACE" | grep $JOB_NAME | awk '{print $1}');
-export JOB_NAME=$(kubectl get job -n "$NAMESPACE" | grep $JOB_NAME | awk '{print $1}');
+#export JOB_NAME=$(kubectl get job -n "$NAMESPACE" | grep $JOB_NAME | awk '{print $1}');
 #export SLEEP_TIME
 #export LOG_FOLLOW_DURATION
 #export JOB_FILEPATH
@@ -56,7 +56,7 @@ echo "${KUBE_CONFIG_DATA}" | base64 -d > kubeconfig
 export KUBECONFIG="${PWD}/kubeconfig"
 chmod 600 "${PWD}/kubeconfig"
 
-if [ -z "$INPUT_COMMAND" ]; then
+if [ ! -z "$INPUT_COMMAND" ]; then
   output=$(bash -c "${INPUT_COMMAND}")
 else
   # Check if JOB_NAME is set
