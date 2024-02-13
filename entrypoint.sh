@@ -56,12 +56,24 @@ if [ ! -z "$INPUT_COMMAND" ]; then
   output=$(bash -c "${INPUT_COMMAND}")
 else
   jobStatusOutput=$(job_status)
-  jobLogsOutput=$(job_logs)
-  output="${jobStatusOutput}\n${jobLogsOutput}"
-fi
-
+  output="${jobStatusOutput}"
 {
   echo "response<<EOF";
   echo "$output";
   echo "EOF";
 } >> "${GITHUB_OUTPUT}"
+
+  jobLogsOutput=$(job_logs)
+  output="${jobLogsOutput}"
+{
+  echo "response<<EOF";
+  echo "$output";
+  echo "EOF";
+} >> "${GITHUB_OUTPUT}"
+fi
+
+#{
+#  echo "response<<EOF";
+#  echo "$output";
+#  echo "EOF";
+#} >> "${GITHUB_OUTPUT}"
