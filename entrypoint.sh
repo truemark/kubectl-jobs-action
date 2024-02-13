@@ -1,7 +1,5 @@
 #!/bin/bash
 
-set -xe
-
 function job_status() {
   local response=""
 
