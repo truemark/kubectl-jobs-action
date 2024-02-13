@@ -1,7 +1,5 @@
 #!/bin/bash
 
-set -xe
-
 function job_status() {
   local response=""
 
@@ -62,6 +60,7 @@ else
     echo "JOB_NAME is not set. Exiting..."
     exit 1
   fi
+  set -xe
   jobStatusOutput=$(job_status)
   jobLogsOutput=$(job_logs)
   output="${jobStatusOutput}\n${jobLogsOutput}"
