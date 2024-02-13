@@ -2,10 +2,6 @@
 
 set -xe
 
-echo "${KUBE_CONFIG_DATA}" | base64 -d > kubeconfig
-export KUBECONFIG="${PWD}/kubeconfig"
-chmod 600 "${PWD}/kubeconfig"
-
 function job_status() {
   local response=""
 
@@ -49,12 +45,16 @@ function job_logs() {
   echo "$response"
 }
 
-export NAMESPACE
+#export NAMESPACE
 export POD_NAME=$(kubectl get pods -n "$NAMESPACE" | grep $JOB_NAME | awk '{print $1}');
 export JOB_NAME=$(kubectl get job -n "$NAMESPACE" | grep $JOB_NAME | awk '{print $1}');
-export SLEEP_TIME
-export LOG_FOLLOW_DURATION
-export JOB_FILEPATH
+#export SLEEP_TIME
+#export LOG_FOLLOW_DURATION
+#export JOB_FILEPATH
+
+echo "${KUBE_CONFIG_DATA}" | base64 -d > kubeconfig
+export KUBECONFIG="${PWD}/kubeconfig"
+chmod 600 "${PWD}/kubeconfig"
 
 # Check if JOB_NAME is set
 if [ -z "$JOB_NAME" ]; then
