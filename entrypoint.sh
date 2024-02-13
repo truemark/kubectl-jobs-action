@@ -1,7 +1,5 @@
 #!/bin/bash
 
-set -xe
-
 function job_status() {
   local response=""
 
@@ -55,7 +53,7 @@ export KUBECONFIG="${PWD}/kubeconfig"
 chmod 600 "${PWD}/kubeconfig"
 
 if [ ! -z "$INPUT_COMMAND" ]; then
-  bash -c "${INPUT_COMMAND}" >> "${GITHUB_OUTPUT}"
+  output=$(bash -c "${INPUT_COMMAND}")
 else
   jobStatusOutput=$(job_status)
   jobLogsOutput=$(job_logs)
