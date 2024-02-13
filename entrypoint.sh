@@ -56,15 +56,14 @@ echo "${KUBE_CONFIG_DATA}" | base64 -d > kubeconfig
 export KUBECONFIG="${PWD}/kubeconfig"
 chmod 600 "${PWD}/kubeconfig"
 
-# Check if JOB_NAME is set
-if [ -z "$JOB_NAME" ]; then
-  echo "JOB_NAME is not set. Exiting..."
-  exit 1
-fi
-
 if [ -z "$INPUT_COMMAND" ]; then
   output=$(bash -c "${INPUT_COMMAND}")
 else
+  # Check if JOB_NAME is set
+  if [ -z "$JOB_NAME" ]; then
+    echo "JOB_NAME is not set. Exiting..."
+    exit 1
+  fi
   jobStatusOutput=$(job_status)
   jobLogsOutput=$(job_logs)
   output="${jobStatusOutput}\n${jobLogsOutput}"
