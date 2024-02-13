@@ -10,7 +10,7 @@ export LOG_FOLLOW_DURATION
 export JOB_FILEPATH
 
 echo "${KUBE_CONFIG_DATA}" | base64 -d > kubeconfig
-export KUBECONFIG="${PWD}kubeconfig"
+export KUBECONFIG="${PWD}/kubeconfig"
 chmod 600 "${PWD}/kubeconfig"
 
 function job_status() {
@@ -56,7 +56,7 @@ function job_logs() {
   echo "$response"
 }
 
-env
+kubectl cluster-info
 
 # Check if JOB_NAME is set
 if [ -z "$JOB_NAME" ]; then
