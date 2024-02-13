@@ -1,6 +1,6 @@
 #!/bin/bash
 
-set -e
+set -xe
 
 export NAMESPACE
 export POD_NAME=$(kubectl get pods -n "$NAMESPACE" | grep $JOB_NAME | awk '{print $1}');
