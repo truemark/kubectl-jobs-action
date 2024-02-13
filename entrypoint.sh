@@ -62,10 +62,14 @@ if [ -z "$JOB_NAME" ]; then
   exit 1
 fi
 
-jobStatusOutput=$(job_status)
-jobLogsOutput=$(job_logs)
+if [ -z "$INPUT_COMMAND" ]; then
+  output=$(bash -c "${INPUT_COMMAND}")
+else
+  jobStatusOutput=$(job_status)
+  jobLogsOutput=$(job_logs)
+  output="${jobStatusOutput}\n${jobLogsOutput}"
+fi
 
-output="${jobStatusOutput}\n${jobLogsOutput}"
 {
   echo "response<<EOF";
   echo "$output";
