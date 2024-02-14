@@ -48,12 +48,6 @@ function job_logs() {
 }
 
 
-# Check if NAMESPACE is set
-if [ -z "$INPUT_NAMESPACE" ]; then
-  echo "NAMESPACE is not set. Exiting..."
-  exit 1
-fi
-
 echo "${KUBE_CONFIG_DATA}" | base64 -d > kubeconfig
 export KUBECONFIG="${PWD}/kubeconfig"
 chmod 600 "${PWD}/kubeconfig"
@@ -61,6 +55,11 @@ chmod 600 "${PWD}/kubeconfig"
 if [ ! -z "$INPUT_COMMAND" ]; then
   output=$(bash -c "${INPUT_COMMAND}")
 else
+  # Check if NAMESPACE is set
+  if [ -z "$INPUT_NAMESPACE" ]; then
+    echo "NAMESPACE is not set. Exiting..."
+    exit 1
+  fi
   jobStatusOutput=$(job_status)
   output="${jobStatusOutput}"
 {
