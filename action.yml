@@ -25,6 +25,12 @@ inputs:
   cluster-name:
     required: true
     description: 'Name of the cluster to use.'
+  KUBECTL_VERSION:
+    description: 'Version of kubectl to use.'
+    default: '1.21.2'
+  HELM_VERSION:
+    description: 'Version of helm to use.'
+    default: '3.8.0'
 outputs:
   result:
     description: "Output returned by your Helm or kubectl command"
@@ -40,3 +46,5 @@ runs:
     - ${{ inputs.job-filepath }}
     - ${{ inputs.command }}
     - ${{ inputs.cluster-name }}
+    - ${{ inputs.KUBECTL_VERSION }}
+    - ${{ inputs.HELM_VERSION }}
