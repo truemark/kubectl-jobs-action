@@ -24,18 +24,7 @@ else
     exit 1
   fi
 
-  COUNTER=0
-  MAX_RETRIES=15
-
   while true; do
-    # Increment counter
-    COUNTER=$((COUNTER+1))
-
-    # Check if counter has reached the max retries
-    if [ "$COUNTER" -ge "$MAX_RETRIES" ]; then
-        echo "Maximum retries ($MAX_RETRIES) reached. Exiting..."
-        break
-    fi
 
     POD_NAME=$(kubectl get pods -n "$NAMESPACE" | grep $JOB_NAME | awk '{print $1}');
     POD_STATUS=$(kubectl get pod "$POD_NAME" -n "$NAMESPACE" -o jsonpath='{.status.phase}')
@@ -53,20 +42,32 @@ else
     fi
   done
 
-  while true; do
-      STATUS=$(kubectl get job $JOB_NAME -n $NAMESPACE -o jsonpath='{.status.conditions[?(@.type=="Complete")].status}')
+  COUNTER=0
+  MAX_RETRIES=15
 
-      if [ "$STATUS" == "True" ]; then
-          echo -e "\nJob: $JOB_NAME completed successfully\n"
-          sleep 1
-          kubectl delete -f $JOB_FILEPATH -n "$NAMESPACE"
-          exit 0
-      elif [ "$STATUS" == "False" ]; then
-          echo "Job failed"
-      else
-          echo "Job is still running"
-          sleep $SLEEP_TIME
-      fi
+  while true; do
+
+    # Increment counter
+    COUNTER=$((COUNTER+1))
+
+    # Check if counter has reached the max retries
+    if [ "$COUNTER" -ge "$MAX_RETRIES" ]; then
+        echo "Maximum retries ($MAX_RETRIES) reached. Exiting..."
+        break
+    fi
+    STATUS=$(kubectl get job $JOB_NAME -n $NAMESPACE -o jsonpath='{.status.conditions[?(@.type=="Complete")].status}')
+
+    if [ "$STATUS" == "True" ]; then
+        echo -e "\nJob: $JOB_NAME completed successfully\n"
+        sleep 1
+        kubectl delete -f $JOB_FILEPATH -n "$NAMESPACE"
+        exit 0
+    elif [ "$STATUS" == "False" ]; then
+        echo "Job failed"
+    else
+        echo "Job is still running"
+        sleep $SLEEP_TIME
+    fi
   done
 fi
 
