@@ -13,7 +13,7 @@ CLUSTER_NAME=$8
 echo "${KUBE_CONFIG_DATA}" | base64 -d > kubeconfig
 export KUBECONFIG="${PWD}/kubeconfig"
 chmod 600 "${PWD}/kubeconfig"
-aws eks update-kubeconfig --name $CLUSTER_NAME --kubeconfig "${PWD}/kubeconfig"
+aws eks update-kubeconfig --name "${CLUSTER_NAME}" --kubeconfig "${PWD}/kubeconfig"
 
 if [ ! -z "$INPUT_COMMAND" ]; then
   bash -c "${INPUT_COMMAND}"
