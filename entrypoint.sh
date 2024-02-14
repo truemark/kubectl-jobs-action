@@ -16,7 +16,7 @@ chmod 600 "${PWD}/kubeconfig"
 aws eks update-kubeconfig --name "${CLUSTER_NAME}" --kubeconfig "${PWD}/kubeconfig"
 
 if [ ! -z "$INPUT_COMMAND" ]; then
-  bash -c "${INPUT_COMMAND}"
+  eval "${INPUT_COMMAND}"
 else
   # Check if NAMESPACE is set
   if [ -z "$NAMESPACE" ]; then
