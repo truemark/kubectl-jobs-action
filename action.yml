@@ -3,17 +3,14 @@ description: 'Triggers a deployment of a kubernetes job and checks for completio
 inputs:
   job-name:
     description: 'Name of the job to deploy.'
-    required: true
   namespace:
     description: 'Namespace to deploy the job to.'
     required: true
   sleep-time:
     description: 'Time to sleep between checking for job completion.'
-    required: true
     default: '5s'
   log-follow-duration:
     description: 'Duration to follow the logs of the job.'
-    required: true
     default: '60s'
   KUBE_CONFIG_DATA:
     description: 'Kubeconfig data to use for kubectl commands.'
@@ -21,12 +18,12 @@ inputs:
     default: ''
   job-filepath:
     description: 'Filepath to the job yaml file to deploy.'
-    required: true
     default: ''
   command:
     description: 'Command to run with kubectl or helm.'
     default: ''
   cluster-name:
+    required: true
     description: 'Name of the cluster to use.'
 outputs:
   result:
