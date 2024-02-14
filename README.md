@@ -3,7 +3,7 @@
 GitHub Action for executing kubectl and helm commands on a Kubernetes cluster.
 It will also pull the logs from a job that is running on the cluster.
 
-The Helm version installed in the action is 3.8.0.
+The Helm version installed in the action is 3.8.0. <br />
 The Kubectl version installed in the action is 1.21.2.
 
 ## Input Variables
