@@ -1,5 +1,5 @@
 #!/bin/bash
-set -xe
+#set -xe
 
 JOB_NAME=$3
 NAMESPACE=$4
