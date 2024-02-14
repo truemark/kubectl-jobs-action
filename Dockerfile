@@ -4,7 +4,7 @@ FROM alpine:3.13
 
 ARG AWSCLI_VERSION="1.24.0"
 ARG HELM_VERSION="3.8.0"
-ARG KUBECTL_VERSION="1.28.2"
+ARG KUBECTL_VERSION="1.21.2"
 
 COPY --from=sops /usr/local/bin/sops /usr/bin/sops
 
