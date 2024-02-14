@@ -1,5 +1,5 @@
 #!/bin/bash
-
+set -xe
 
 JOB_NAME=$3
 NAMESPACE=$4
@@ -63,6 +63,11 @@ chmod 600 "${PWD}/kubeconfig"
 
 if [ ! -z "$INPUT_COMMAND" ]; then
   output=$(bash -c "${INPUT_COMMAND}")
+  {
+    echo "response<<EOF";
+    echo "$output";
+    echo "EOF";
+  } >> "${GITHUB_OUTPUT}"
 else
   # Check if NAMESPACE is set
   if [ -z "$NAMESPACE" ]; then
@@ -111,8 +116,8 @@ else
   done
 
 fi
-{
-  echo "response<<EOF";
-  echo "$output";
-  echo "EOF";
-} >> "${GITHUB_OUTPUT}"
+#{
+#  echo "response<<EOF";
+#  echo "$output";
+#  echo "EOF";
+#} >> "${GITHUB_OUTPUT}"
