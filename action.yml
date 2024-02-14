@@ -45,3 +45,4 @@ runs:
     - ${{ inputs.log-follow-duration }}
     - ${{ inputs.KUBE_CONFIG_DATA }}
     - ${{ inputs.job-filepath }}
+    - ${{ inputs.command }}
