@@ -26,6 +26,8 @@ inputs:
   command:
     description: 'Command to run with kubectl or helm.'
     default: ''
+  cluster-name:
+    description: 'Name of the cluster to use.'
 outputs:
   result:
     description: "Output returned by your Helm or kubectl command"
@@ -40,3 +42,4 @@ runs:
     - ${{ inputs.KUBE_CONFIG_DATA }}
     - ${{ inputs.job-filepath }}
     - ${{ inputs.command }}
+    - ${{ inputs.cluster-name }}
