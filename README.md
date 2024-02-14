@@ -65,6 +65,27 @@ jobs:
           log-follow-duration: 30
           cluster-name: ${{ env.CLUSTER_NAME }}
 ```
-```yaml
 
+```yaml
+# Example of using the action to run a kubectl command
+- name: kubectl get pods
+  uses: truemark/kubectl-logs-action@master
+  with:
+    KUBE_CONFIG_DATA: ${{ secrets.KUBE_CONFIG_DATA }}
+    namespace: default
+    command: kubectl get pods
+    cluster-name: ${{ env.CLUSTER_NAME }}
+```
+
+```yaml
+# Example of using the action pull logs from a job
+- name: pull logs from job
+  uses: truemark/kubectl-logs-action@master
+  with:
+    KUBE_CONFIG_DATA: ${{ secrets.KUBE_CONFIG_DATA }}
+    namespace: default
+    job-name: integration-tests-${{ inputs.deployment_env }}
+    sleep-time: 2
+    log-follow-duration: 30
+    cluster-name: ${{ env.CLUSTER_NAME }}
 ```
