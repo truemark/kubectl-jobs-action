@@ -62,12 +62,7 @@ export KUBECONFIG="${PWD}/kubeconfig"
 chmod 600 "${PWD}/kubeconfig"
 
 if [ ! -z "$INPUT_COMMAND" ]; then
-  bash -c "${INPUT_COMMAND}" #>> "${GITHUB_OUTPUT}"
-#  {
-#    echo "response<<EOF";
-#    echo "$output";
-#    echo "EOF";
-#  } >> "${GITHUB_OUTPUT}"
+  bash -c "${INPUT_COMMAND}"
 else
   # Check if NAMESPACE is set
   if [ -z "$NAMESPACE" ]; then
@@ -86,15 +81,14 @@ else
     POD_STATUS=$(kubectl get pod "$POD_NAME" -n "$NAMESPACE" -o jsonpath='{.status.phase}')
 
     if [ "$POD_STATUS" == "Running" ]; then
-        response+="Pod $POD_NAME is running. Following logs for $LOG_FOLLOW_DURATION seconds..."
+        echo "Pod $POD_NAME is running. Following logs for $LOG_FOLLOW_DURATION seconds..."
         # Follow the logs for a specified duration
-        log_output=$(timeout $LOG_FOLLOW_DURATION kubectl logs -f "$POD_NAME" -n "$NAMESPACE")
-        response+="$log_output\n"
-        break # Exit the loop
+        timeout $LOG_FOLLOW_DURATION kubectl logs -f "$POD_NAME" -n "$NAMESPACE"
+        break
     elif [ "$POD_STATUS" == "Error" ]; then
         kubectl delete pod $POD_NAME -n "$NAMESPACE"
     else
-        response+="Pod $POD_NAME is not in 'Running' status. Current status is $POD_STATUS. Retrying in $SLEEP_TIME seconds..."
+        echo "Pod $POD_NAME is not in 'Running' status. Current status is $POD_STATUS. Retrying in $SLEEP_TIME seconds..."
         sleep $SLEEP_TIME
     fi
   done
@@ -103,14 +97,14 @@ else
       STATUS=$(kubectl get job $JOB_NAME -n $NAMESPACE -o jsonpath='{.status.conditions[?(@.type=="Complete")].status}')
 
       if [ "$STATUS" == "True" ]; then
-          response+="\nJob: $JOB_NAME completed successfully\n"
+          echo "\nJob: $JOB_NAME completed successfully\n"
           sleep 1
           kubectl delete -f $JOB_FILEPATH -n "$NAMESPACE"
           exit 0
       elif [ "$STATUS" == "False" ]; then
-          response+="Job failed"
+          echo "Job failed"
       else
-          response+="Job is still running"
+          echo "Job is still running"
           sleep $SLEEP_TIME
       fi
   done
