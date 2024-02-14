@@ -5,17 +5,17 @@ function job_status() {
 
   while true; do
 
-    POD_NAME=$(kubectl get pods -n "$NAMESPACE" | grep $JOB_NAME | awk '{print $1}');
-    POD_STATUS=$(kubectl get pod "$POD_NAME" -n "$NAMESPACE" -o jsonpath='{.status.phase}')
+    POD_NAME=$(kubectl get pods -n "$INPUT_NAMESPACE" | grep $JOB_NAME | awk '{print $1}');
+    POD_STATUS=$(kubectl get pod "$POD_NAME" -n "$INPUT_NAMESPACE" -o jsonpath='{.status.phase}')
 
     if [ "$POD_STATUS" == "Running" ]; then
         response+="Pod $POD_NAME is running. Following logs for $LOG_FOLLOW_DURATION seconds..."
         # Follow the logs for a specified duration
-        log_output=$(timeout $LOG_FOLLOW_DURATION kubectl logs -f "$POD_NAME" -n "$NAMESPACE")
+        log_output=$(timeout $LOG_FOLLOW_DURATION kubectl logs -f "$POD_NAME" -n "$INPUT_NAMESPACE")
         response+="$log_output\n"
         break # Exit the loop
     elif [ "$POD_STATUS" == "Error" ]; then
-        kubectl delete pod $POD_NAME -n "$NAMESPACE"
+        kubectl delete pod $POD_NAME -n "$INPUT_NAMESPACE"
     else
         response+="Pod $POD_NAME is not in 'Running' status. Current status is $POD_STATUS. Retrying in $SLEEP_TIME seconds..."
         sleep $SLEEP_TIME
@@ -29,12 +29,12 @@ function job_logs() {
   local response=""
 
   while true; do
-      STATUS=$(kubectl get job $JOB_NAME -n $NAMESPACE -o jsonpath='{.status.conditions[?(@.type=="Complete")].status}')
+      STATUS=$(kubectl get job $JOB_NAME -n $INPUT_NAMESPACE -o jsonpath='{.status.conditions[?(@.type=="Complete")].status}')
 
       if [ "$STATUS" == "True" ]; then
           response+="\nJob: $JOB_NAME completed successfully\n"
           sleep 1
-          kubectl delete -f $JOB_FILEPATH -n "$NAMESPACE"
+          kubectl delete -f $JOB_FILEPATH -n "$INPUT_NAMESPACE"
           exit 0
       elif [ "$STATUS" == "False" ]; then
           response+="Job failed"
@@ -47,6 +47,12 @@ function job_logs() {
   echo "$response"
 }
 
+
+# Check if NAMESPACE is set
+if [ -z "$INPUT_NAMESPACE" ]; then
+  echo "NAMESPACE is not set. Exiting..."
+  exit 1
+fi
 
 echo "${KUBE_CONFIG_DATA}" | base64 -d > kubeconfig
 export KUBECONFIG="${PWD}/kubeconfig"
