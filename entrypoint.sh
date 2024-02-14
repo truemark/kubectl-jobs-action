@@ -63,6 +63,11 @@ chmod 600 "${PWD}/kubeconfig"
 
 if [ ! -z "$INPUT_COMMAND" ]; then
   output=$(bash -c "${INPUT_COMMAND}")
+{
+  echo "response<<EOF";
+  echo "$output";
+  echo "EOF";
+} >> "${GITHUB_OUTPUT}"
 else
   # Check if NAMESPACE is set
   if [ -z "$NAMESPACE" ]; then
