@@ -65,9 +65,8 @@ jobs:
           log-follow-duration: 30
           cluster-name: ${{ env.CLUSTER_NAME }}
 ```
-
+### Example of using the action to run a kubectl command
 ```yaml
-# Example of using the action to run a kubectl command
 - name: kubectl get pods
   uses: truemark/kubectl-logs-action@master
   with:
@@ -76,9 +75,8 @@ jobs:
     command: kubectl get pods
     cluster-name: ${{ env.CLUSTER_NAME }}
 ```
-
+### Example of using the action pull logs from a job
 ```yaml
-# Example of using the action pull logs from a job
 - name: pull logs from job
   uses: truemark/kubectl-logs-action@master
   with:
