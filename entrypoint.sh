@@ -63,11 +63,6 @@ chmod 600 "${PWD}/kubeconfig"
 
 if [ ! -z "$INPUT_COMMAND" ]; then
   output=$(bash -c "${INPUT_COMMAND}")
-{
-  echo "response<<EOF";
-  echo "$output";
-  echo "EOF";
-} >> "${GITHUB_OUTPUT}"
 else
   # Check if NAMESPACE is set
   if [ -z "$NAMESPACE" ]; then
@@ -75,24 +70,12 @@ else
     exit 1
   fi
   jobStatusOutput=$(job_status)
-  output="${jobStatusOutput}"
-{
-  echo "response<<EOF";
-  echo "$output";
-  echo "EOF";
-} >> "${GITHUB_OUTPUT}"
-
   jobLogsOutput=$(job_logs)
-  output="${jobLogsOutput}"
-{
-  echo "response<<EOF";
-  echo "$output";
-  echo "EOF";
-} >> "${GITHUB_OUTPUT}"
+  output="${jobStatusOutput}\n${jobLogsOutput}"
 fi
 
-#{
-#  echo "response<<EOF";
-#  echo "$output";
-#  echo "EOF";
-#} >> "${GITHUB_OUTPUT}"
+{
+  echo "response<<EOF";
+  echo "$output";
+  echo "EOF";
+} >> "${GITHUB_OUTPUT}"
