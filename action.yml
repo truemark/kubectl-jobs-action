@@ -1,10 +1,6 @@
 name: 'kubectl-jobs'
 description: 'Triggers a deployment of a kubernetes job and checks for completion of the job. Then removes the job resources.'
 inputs:
-  kubectl-version:
-    description: 'Version of the kubectl tool to use.'
-  helm-version:
-    description: 'Version of the helm tool to use.'
   job-name:
     description: 'Name of the job to deploy.'
     required: true
@@ -37,8 +33,6 @@ runs:
   using: 'docker'
   image: 'Dockerfile'
   args:
-    - ${{ inputs.kubectl-version }}
-    - ${{ inputs.helm-version }}
     - ${{ inputs.job-name }}
     - ${{ inputs.namespace }}
     - ${{ inputs.sleep-time }}
