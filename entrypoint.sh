@@ -62,7 +62,7 @@ export KUBECONFIG="${PWD}/kubeconfig"
 chmod 600 "${PWD}/kubeconfig"
 
 if [ ! -z "$INPUT_COMMAND" ]; then
-  bash -c "${INPUT_COMMAND}" >> "${GITHUB_OUTPUT}"
+  bash -c "${INPUT_COMMAND}" #>> "${GITHUB_OUTPUT}"
 #  {
 #    echo "response<<EOF";
 #    echo "$output";
