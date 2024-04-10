@@ -75,7 +75,7 @@ jobs:
     command: kubectl get pods
     cluster-name: ${{ env.CLUSTER_NAME }}
 ```
-### Example of using the action pull logs from a job
+### Example of using the action to pull logs from a job in the pipeline, and create an artifact of the logs if the job fails.
 ```yaml
 - name: pull logs from job
   uses: truemark/kubectl-logs-action@master
@@ -86,4 +86,12 @@ jobs:
     sleep-time: 2
     log-follow-duration: 30
     cluster-name: ${{ env.CLUSTER_NAME }}
+    
+- name: Upload Target
+  if: failure() && steps.integration-tests.outcome == 'failure'
+  uses: actions/upload-artifact@v3
+  with:
+    name: failed_tests
+    path: |
+      failed_tests/**
 ```
