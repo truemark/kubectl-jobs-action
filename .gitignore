@@ -1,1 +1,4 @@
 .idea
+kubeconfig
+test.sh
+failed_tests/**
