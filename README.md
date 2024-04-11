@@ -78,6 +78,7 @@ jobs:
 ### Example of using the action to pull logs from a job in the pipeline, and create an artifact of the logs if the job fails.
 ```yaml
 - name: pull logs from job
+  id: integration-tests
   uses: truemark/kubectl-logs-action@master
   with:
     KUBE_CONFIG_DATA: ${{ secrets.KUBE_CONFIG_DATA }}
