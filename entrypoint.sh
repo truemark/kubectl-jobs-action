@@ -43,14 +43,14 @@ else
   while true; do
 
     # Get all pods with 'integration' in their name and their status
-    pods=$(kubectl get pods --no-headers -n $NAMESPACE | grep integration | awk '{print $1, $3}')
+    readarray -t pod_lines <<< "$(kubectl get pods --no-headers -n "$NAMESPACE" | grep integration | awk '{print $1, $3}')"
 
     if [ -z "$pods" ]; then
       delete_manifests
       exit 1
     fi
 
-    echo "$pods" | while read -r line; do
+    for line in "${pod_lines[@]}"; do
         pod_name=$(echo $line | awk '{print $1}')
         pod_status=$(echo $line | awk '{print $2}')
 
