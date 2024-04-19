@@ -53,6 +53,11 @@ else
     for line in "${pod_lines[@]}"; do
         pod_name=$(echo $line | awk '{print $1}')
         pod_status=$(echo $line | awk '{print $2}')
+        
+        if [ -z "$pod_name" ]; then
+          delete_manifests
+          exit 1
+        fi
 
         case $pod_status in
             Running)
