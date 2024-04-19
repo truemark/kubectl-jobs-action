@@ -45,6 +45,7 @@ else
     # Get all pods with 'integration' in their name and their status
     readarray -t pod_lines <<< "$(kubectl get pods --no-headers -n "$NAMESPACE" | grep integration | awk '{print $1, $3}')"
 
+    sleep 3
     if [ -z "$pods" ]; then
       delete_manifests
       exit 1
